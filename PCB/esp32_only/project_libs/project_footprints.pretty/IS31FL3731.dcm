@@ -1,0 +1,8 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP IS31FL3731
+D MATRIX LED DRIVER
+K led, matrix, charlie, charlieplex, driver
+$ENDCMP
+#
+#End Doc Library
