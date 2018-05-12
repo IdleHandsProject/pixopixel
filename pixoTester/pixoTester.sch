@@ -1,0 +1,197 @@
+EESchema Schematic File Version 2
+LIBS:power
+LIBS:device
+LIBS:switches
+LIBS:relays
+LIBS:motors
+LIBS:transistors
+LIBS:conn
+LIBS:linear
+LIBS:regul
+LIBS:74xx
+LIBS:cmos4000
+LIBS:adc-dac
+LIBS:memory
+LIBS:xilinx
+LIBS:microcontrollers
+LIBS:dsp
+LIBS:microchip
+LIBS:analog_switches
+LIBS:motorola
+LIBS:texas
+LIBS:intel
+LIBS:audio
+LIBS:interface
+LIBS:digital-audio
+LIBS:philips
+LIBS:display
+LIBS:cypress
+LIBS:siliconi
+LIBS:opto
+LIBS:atmel
+LIBS:contrib
+LIBS:valves
+LIBS:pixoTester-cache
+EELAYER 25 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+Text GLabel 3500 3150 0    39   Input ~ 0
+CKS
+Text GLabel 3500 3250 0    39   Input ~ 0
+SDS
+Wire Wire Line
+	3500 3050 3450 3050
+Wire Wire Line
+	3450 3050 3450 2900
+$Comp
+L +5V #PWR01
+U 1 1 5AC3CDB7
+P 3450 2900
+F 0 "#PWR01" H 3450 2750 50  0001 C CNN
+F 1 "+5V" H 3450 3040 50  0000 C CNN
+F 2 "" H 3450 2900 50  0000 C CNN
+F 3 "" H 3450 2900 50  0000 C CNN
+	1    3450 2900
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR02
+U 1 1 5AC3CDBD
+P 3450 3400
+F 0 "#PWR02" H 3450 3150 50  0001 C CNN
+F 1 "GND" H 3450 3250 50  0000 C CNN
+F 2 "" H 3450 3400 50  0000 C CNN
+F 3 "" H 3450 3400 50  0000 C CNN
+	1    3450 3400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3500 3350 3450 3350
+Wire Wire Line
+	3450 3350 3450 3400
+$Comp
+L Conn_01x04 J1
+U 1 1 5AC3CE06
+P 3700 3150
+F 0 "J1" H 3700 3350 50  0000 C CNN
+F 1 "Conn_01x04" H 3700 2850 50  0000 C CNN
+F 2 "Connectors_JST_PH:Connectors_JST_S4B-PH-SM4-TB" H 3700 3150 50  0001 C CNN
+F 3 "" H 3700 3150 50  0001 C CNN
+	1    3700 3150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Conn_01x04 J2
+U 1 1 5AC3CFBB
+P 4450 3150
+F 0 "J2" H 4450 3350 50  0000 C CNN
+F 1 "push_pins" H 4450 2850 50  0000 C CNN
+F 2 "idlehands_footprints:pixo_testpins" H 4450 3150 50  0001 C CNN
+F 3 "" H 4450 3150 50  0001 C CNN
+	1    4450 3150
+	-1   0    0    -1  
+$EndComp
+$Comp
+L +5V #PWR03
+U 1 1 5AC3D04B
+P 4750 2950
+F 0 "#PWR03" H 4750 2800 50  0001 C CNN
+F 1 "+5V" H 4750 3090 50  0000 C CNN
+F 2 "" H 4750 2950 50  0000 C CNN
+F 3 "" H 4750 2950 50  0000 C CNN
+	1    4750 2950
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR04
+U 1 1 5AC3D05C
+P 4750 3450
+F 0 "#PWR04" H 4750 3200 50  0001 C CNN
+F 1 "GND" H 4750 3300 50  0000 C CNN
+F 2 "" H 4750 3450 50  0000 C CNN
+F 3 "" H 4750 3450 50  0000 C CNN
+	1    4750 3450
+	1    0    0    -1  
+$EndComp
+Text GLabel 4750 3150 2    39   Input ~ 0
+CKS
+Text GLabel 4750 3250 2    39   Input ~ 0
+SDS
+Wire Wire Line
+	4650 3050 4750 3050
+Wire Wire Line
+	4750 3050 4750 2950
+Wire Wire Line
+	4650 3150 4750 3150
+Wire Wire Line
+	4650 3250 4750 3250
+Wire Wire Line
+	4650 3350 4750 3350
+Wire Wire Line
+	4750 3350 4750 3450
+$Comp
+L LED D1
+U 1 1 5AC3D0A8
+P 6150 3200
+F 0 "D1" H 6150 3300 50  0000 C CNN
+F 1 "LED" H 6150 3100 50  0000 C CNN
+F 2 "LEDs:LED-0603" H 6150 3200 50  0001 C CNN
+F 3 "" H 6150 3200 50  0001 C CNN
+	1    6150 3200
+	-1   0    0    1   
+$EndComp
+$Comp
+L R_Small R1
+U 1 1 5AC3D101
+P 5800 3200
+F 0 "R1" H 5830 3220 50  0000 L CNN
+F 1 "1K" H 5830 3160 50  0000 L CNN
+F 2 "Resistors_SMD:R_0805" H 5800 3200 50  0001 C CNN
+F 3 "" H 5800 3200 50  0001 C CNN
+	1    5800 3200
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	5600 3200 5700 3200
+Wire Wire Line
+	5600 3050 5600 3200
+Wire Wire Line
+	5900 3200 6000 3200
+Wire Wire Line
+	6300 3200 6400 3200
+Wire Wire Line
+	6400 3200 6400 3350
+$Comp
+L +5V #PWR05
+U 1 1 5AC3D1CC
+P 5600 3050
+F 0 "#PWR05" H 5600 2900 50  0001 C CNN
+F 1 "+5V" H 5600 3190 50  0000 C CNN
+F 2 "" H 5600 3050 50  0000 C CNN
+F 3 "" H 5600 3050 50  0000 C CNN
+	1    5600 3050
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR06
+U 1 1 5AC3D3C9
+P 6400 3350
+F 0 "#PWR06" H 6400 3100 50  0001 C CNN
+F 1 "GND" H 6400 3200 50  0000 C CNN
+F 2 "" H 6400 3350 50  0000 C CNN
+F 3 "" H 6400 3350 50  0000 C CNN
+	1    6400 3350
+	1    0    0    -1  
+$EndComp
+$EndSCHEMATC

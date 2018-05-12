@@ -1162,6 +1162,7 @@ F 0 "J2" H 4900 6400 50  0000 C CNN
 F 1 "ACC" H 4900 5500 50  0000 C CNN
 F 2 "Pin_Headers:Pin_Header_Straight_1x08" H 4900 6000 50  0001 C CNN
 F 3 "" H 4900 6000 50  0001 C CNN
+F 4 "S7006-ND" H 4900 6000 60  0001 C CNN "Digikey Part No."
 	1    4900 6000
 	-1   0    0    1   
 $EndComp
