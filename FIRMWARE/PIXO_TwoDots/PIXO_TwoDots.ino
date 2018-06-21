@@ -85,14 +85,14 @@ void setup(void) {
   matrix.setBrightness(BRIGHTNESS);
 
   
-    screenFlash();
-    delay(500);
-    screenFlash();
-    delay(500);
+//    screenFlash();
+//    delay(500);
+//    screenFlash();
+//    delay(500);
   
-
-  notification();
-  notificationhalf();
+//
+//  notification();
+//  notificationhalf();
 
   memset(img, 0, sizeof(img)); // Clear the img[] array
   int grain_num = 0;
@@ -116,189 +116,20 @@ void setup(void) {
 
 void loop() {
 
-  uint32_t t;
-  while (((t = micros()) - prevTime) < (1000000L / MAX_FPS));
-  prevTime = t;
 
-
-  backbuffer = 1 - backbuffer; // Swap front/back buffer index
-
-  // Read accelerometer...
   mpu.getMotion6(&rax, &ray, &raz, &rgx, &rgy, &rgz);
   randomSeed(A7);
 
-  int16_t ax = -ray / SCALE,      // Transform accelerometer axes
-          ay = -rax / SCALE,      // to grain coordinate space
-          az = abs(raz) / 128; // Random motion factor
-
-  az = (az >= 3) ? 1 : 4 - az;      // Clip & invert
-  ax -= az;                         // Subtract motion factor from X, Y
-  ay -= az;
-  long az2 = az * 2 + 1;         // Range of random motion to add back in
-
-
-  int32_t v2; // Velocity squared
-  float   v;  // Absolute velocity
-  for (int i = 0; i < N_GRAINS; i++) {
-    grain[i].vx += ax + random(az2); // A little randomness makes
-    grain[i].vy += ay + random(az2); // tall stacks topple better!
-
-    v2 = (int32_t)grain[i].vx * grain[i].vx + (int32_t)grain[i].vy * grain[i].vy;
-    if (v2 > 65536) { // If v^2 > 65536, then v > SCALE
-      v = sqrt((float)v2); // Velocity vector magnitude
-      grain[i].vx = (int)(SCALE * (float)grain[i].vx / v); // Maintain heading
-      grain[i].vy = (int)(SCALE * (float)grain[i].vy / v); // Limit magnitude
-    }
-  }
-
-  uint8_t        i, bytes, oldidx, newidx, delta;
-  int16_t        newx, newy;
-  // const uint8_t *ptr = remap;
-
-  randomSeed(A7);
-  int list[N_GRAINS];
-  for (int num = 0; num < N_GRAINS; num++) {
-    list[num] = num;
-  }
-  for (int a = 0; a < N_GRAINS; a++)
-  {
-    int r = random(a, (N_GRAINS));
-    int temp = list[a];
-    list[a] = list[r];
-    list[r] = temp;
-  }
-
-
-  for (i = 0; i < N_GRAINS; i++) {
-    newx = grain[list[i]].x + grain[list[i]].vx;
-    newy = grain[list[i]].y + grain[list[i]].vy;
-    if (newx > MAX_X) {
-      newx         = MAX_X;
-      grain[list[i]].vx /= WBOUNCE;
-    } else if (newx < 0) {
-      newx         = 0;
-      grain[list[i]].vx /= WBOUNCE;
-    }
-    if (newy > MAX_Y) {
-      newy         = MAX_Y;
-      grain[list[i]].vy /= WBOUNCE;
-    } else if (newy < 0) {
-      newy         = 0;
-      grain[list[i]].vy /= WBOUNCE;
-    }
-
-    oldidx = (grain[list[i]].y / SCALE) * WIDTH + (grain[list[i]].x / SCALE);
-    newidx = (newy      / SCALE) * WIDTH + (newx      / SCALE);
-    if ((oldidx != newidx) &&
-        img[newidx]) {
-      delta = abs(newidx - oldidx);
-      if (delta == 1) {
-        newx         = grain[list[i]].x;
-        grain[list[i]].vx /= BBOUNCE;
-        newidx       = oldidx;
-      } else if (delta == WIDTH) {
-        newy         = grain[list[i]].y;
-        grain[list[i]].vy /= BBOUNCE;
-        newidx       = oldidx;
-      } else {
-
-        if ((abs(grain[list[i]].vx) - abs(grain[list[i]].vy)) >= 0) {
-          newidx = (grain[list[i]].y / SCALE) * WIDTH + (newx / SCALE);
-          if (!img[newidx]) {
-            newy         = grain[list[i]].y;
-            grain[list[i]].vy /= BBOUNCE;
-          } else {
-            newidx = (newy / SCALE) * WIDTH + (grain[list[i]].x / SCALE);
-            if (!img[newidx]) {
-              newx         = grain[list[i]].x;
-              grain[list[i]].vx /= BBOUNCE;
-            } else {
-              newx         = grain[list[i]].x;
-              newy         = grain[list[i]].y;
-              grain[list[i]].vx /= BBOUNCE;
-              grain[list[i]].vy /= BBOUNCE;
-              newidx       = oldidx;
-            }
-          }
-        } else {
-          newidx = (newy / SCALE) * WIDTH + (grain[list[i]].x / SCALE);
-          if (!img[newidx]) {
-            newx         = grain[list[i]].x;
-            grain[list[i]].vy /= BBOUNCE;
-          } else {
-            newidx = (grain[list[i]].y / SCALE) * WIDTH + (newx / SCALE);
-            if (!img[newidx]) {
-              newy         = grain[list[i]].y;
-              grain[list[i]].vy /= BBOUNCE;
-            } else {
-              newx         = grain[list[i]].x;
-              newy         = grain[list[i]].y;
-              grain[list[i]].vx /= BBOUNCE;
-              grain[list[i]].vy /= BBOUNCE;
-              newidx       = oldidx;
-            }
-          }
-        }
-      }
-    }
-    grain[list[i]].x  = newx;
-    grain[list[i]].y  = newy;
-    img[oldidx] = 0;
-    img[newidx] = 255;
-
-  }
+  int16_t ax = random(-11,11);    // Transform accelerometer axes
+  ax = ax / 10;
+   int16_t ay = random(-11,11);    // Transform accelerometer axes
+  ay = ay / 10;
   matrix.fillScreen(0);
-  for (int i = 0; i < N_GRAINS; i++) {
-    int x = grain[i].x / SCALE;
-    int y = grain[i].y / SCALE;
-    matrix.drawPixel(x, y, matrix.Color(150, 150, 150));
-  }
+  Serial.println(ax);
+    matrix.fillCircle(8-ax, 8-ay, 2, matrix.Color(0, 150, 90));
   matrix.show();
-
-
-
+  delay(50);
 }
 
-void screenFlash(){
-  matrix.fillScreen(matrix.Color(200, 200, 200));
-    matrix.show();
-    delay(500);
-    matrix.fillScreen(0);
-    matrix.show();
-}
 
-void notificationhalf() {
-  for (int j = 15; j >= 0; j--) {
-    matrix.fillScreen(0);
-    for (int i = 0; i < 256; i++) {
-      matrix.setPixelColor(i + (j * 16), sh[i][0], sh[i][1], sh[i][2]);
-    }
-    matrix.show();
-    delay(15);
-  }
-  delay(100);
-}
-
-void notification() {
-  for (int j = 15; j >= 0; j--) {
-    matrix.fillScreen(0);
-    for (int i = 0; i < 256; i++) {
-      matrix.setPixelColor(i + (j * 16), sh[i][0], sh[i][1], sh[i][2]);
-    }
-    matrix.show();
-    delay(15);
-  }
-  delay(700);
-  for (int j = 0; j >= -16; j--) {
-    matrix.fillScreen(0);
-    for (int i = 0; i < 256; i++) {
-      matrix.setPixelColor(i + (j * 16),sh[i][0], sh[i][1], sh[i][2]);
-    }
-    matrix.show();
-    delay(15);
-  }
-  delay(500);
-  matrix.fillScreen(0);
-  matrix.show();
-}
 
