@@ -17,6 +17,8 @@ I have submitted a pull request to the Arduino-ESP32 github: https://github.com/
 9. You should start to see output about flashing
 10. When the flash is complete, press the reset button on the pixo to start your new firmware
 
+[Here](https://youtu.be/dVT4Nei8qHg) is a video of Sean going into detail demonstrating some of the examples
+
 ## Libraries used in Example Firmware
 Install these to your sketchbook's `libraries` folder, usually located in `YOUR HOME/Documents/Arduino`
 
@@ -29,7 +31,6 @@ Install these to your sketchbook's `libraries` folder, usually located in `YOUR 
 **Note** Arduino IDE was complaining about i2cdevlib being invalid as the installation instructions are a bit unclear.
 I found that copying the `I2Cdev` and `MPU6050` folders to the libraries folder from the Arduino folder seems to *kinda* work.
 Perhaps I have the wrong library, because I get compile errors when trying to use either `I2Cdev` or `MPU6050` from the above source.
-
 
 ## Kickstarter - Success
 This was a [Make100 Kickstarter](https://www.kickstarter.com/projects/idlehandsdev/pixo-pixel-an-esp32-based-iot-rgb-display-for-make) that was recently fulfilled
