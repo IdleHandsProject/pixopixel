@@ -29,8 +29,34 @@ Install these to your sketchbook's `libraries` folder, usually located in `YOUR 
 * [i2cdevlib](https://github.com/jrowberg/i2cdevlib)
 
 **Note** Arduino IDE was complaining about i2cdevlib being invalid as the installation instructions are a bit unclear.
-I found that copying the `I2Cdev` and `MPU6050` folders to the libraries folder from the Arduino folder seems to *kinda* work.
-Perhaps I have the wrong library, because I get compile errors when trying to use either `I2Cdev` or `MPU6050` from the above source.
+It seems that the ESP32 is not officially supported for use with these libraries, and I had to apply a patch ([#367](https://github.com/jrowberg/i2cdevlib/pull/367)) to get no compile errors.
+
+### Patching I2Cdev and MPU6050 Libraries
+1. Download i2cdevlib and extract the zip file
+2. Inside the i2cdevlib/Arduino, copy `I2Cdev` and `MPU6050` folders to your `libraries` folder
+3. Edit `I2Cdev/I2Cdev.cpp`, and immedietly under `#include "I2Cdev.h"`, add the following
+```
+#ifdef ARDUINO_ARCH_ESP32
+#define BUFFER_LENGTH I2C_BUFFER_LENGTH
+#endif
+```
+4. Edit `MPU6050/MPU6050_6Axis_MotionApps20.h` and add the following right above the `DEBUG` section
+```
+#ifndef ARDUINO_ARCH_ESP32
+    typedef void prog_void;
+    typedef char prog_char;
+    typedef unsigned char prog_uchar;
+    typedef int8_t prog_int8_t;
+    typedef uint8_t prog_uint8_t;
+    typedef int16_t prog_int16_t;
+    typedef uint16_t prog_uint16_t;
+    typedef int32_t prog_int32_t;
+    typedef uint32_t prog_uint32_t;
+#endif
+```
+5. Restart Arduino
+
+There's a whole bunch of other commits in here, but this seems mostly to be a mix of: feature adding, bug fixing, and various other changes that may or may not be related. Feel free to experiment with these at your own discretion.
 
 ## Kickstarter - Success
 This was a [Make100 Kickstarter](https://www.kickstarter.com/projects/idlehandsdev/pixo-pixel-an-esp32-based-iot-rgb-display-for-make) that was recently fulfilled
