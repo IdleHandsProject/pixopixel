@@ -1,14 +1,9 @@
 # The PIXO Pixel
 PIXO Pixel is a 16 x 16 RGB LED display that runs off of an ESP32.
+This project is open source!
+You can find the Bill of Materials [here](https://www.findchips.com/org/10-open-hardware/list/85998-pixo-pixel-esp-board-and-led-board) on FindChips.
 
 I have submitted a pull request to the Arduino-ESP32 github: https://github.com/espressif/arduino-esp32 to have the PIXO Pixel have its own board file. This will ensure the pinout that was used will match the pin declartion on the board. In the meantime, please use the "Adafruit Feather ESP32" in the board manager, as the pinout is the same.
-
-Find the BOM on FindChips here: https://www.findchips.com/org/10-open-hardware/list/85998-pixo-pixel-esp-board-and-led-board
-
-It is currently a Kickstarter! Go check it out here:
-https://www.kickstarter.com/projects/idlehandsdev/pixo-pixel-an-esp32-based-iot-rgb-display-for-make
-
-[![Kickstarter Vid](https://img.youtube.com/vi/XT5R4Tftu7k/0.jpg)](https://youtu.be/XT5R4Tftu7k)
 
 ## Flashing Firmware Instructions
 1. You need to have the current version of the [Arduino IDE](https://arduino.cc) installed
@@ -34,3 +29,11 @@ Install these to your sketchbook's `libraries` folder, usually located in `YOUR 
 **Note** Arduino IDE was complaining about i2cdevlib being invalid as the installation instructions are a bit unclear.
 I found that copying the `I2Cdev` and `MPU6050` folders to the libraries folder from the Arduino folder seems to *kinda* work.
 Perhaps I have the wrong library, because I get compile errors when trying to use either `I2Cdev` or `MPU6050` from the above source.
+
+
+## Kickstarter - Success
+This was a [Make100 Kickstarter](https://www.kickstarter.com/projects/idlehandsdev/pixo-pixel-an-esp32-based-iot-rgb-display-for-make) that was recently fulfilled
+
+[![Kickstarter Vid](https://img.youtube.com/vi/XT5R4Tftu7k/0.jpg)](https://youtu.be/XT5R4Tftu7k)
+
+[Completion Video](https://youtu.be/YA3uAYVbMNc)
