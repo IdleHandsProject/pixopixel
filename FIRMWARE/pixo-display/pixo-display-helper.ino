@@ -40,6 +40,7 @@ void loop() {
     prevTime = t;
 
     showImage(twitter, 1000);
+    notifyPopupImg(glogo, 500);
 /*
  * showImage, displays an image to the display with no animation
  * args:
@@ -56,6 +57,42 @@ void showImage(int img[256][3], int dlytime) {
     matrix.show();
     delay(dlytime);
   
+    matrix.fillScreen(0);
+    matrix.show();
+}
+
+// Notification functions
+
+/*
+ * notifyPopupImg, draws an image that scrolls into view, and back down
+ * args:
+ * - img[256][3] - Standard Pixo-Style icon
+ * - dlytime - The amount of time (in ms) to keep the image on the display
+ */
+void notifyPopupImg(int img[256][3], int dlytime) {
+    for (int j = 15; j >= 0; j--) {
+        matrix.fillScreen(0);
+        for (int i = 0; i < 256; i++) {
+            matrix.setPixelColor(i + (j * 16),
+                img[i][0], img[i][1], img[i][2]);
+        }
+        matrix.show();
+        delay(50);
+    }
+
+    delay(dlytime);
+
+    for (int j = 0; j <= 16; j++) {
+        matrix.fillScreen(0);
+        for (int i = 0; i < 256; i++) {
+        matrix.setPixelColor(i + (j * 16),
+            img[i][0], img[i][1], img[i][2]);
+        }
+        matrix.show();
+        delay(50);
+    }
+
+    delay(100);
     matrix.fillScreen(0);
     matrix.show();
 }
