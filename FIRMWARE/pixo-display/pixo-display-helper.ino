@@ -38,4 +38,25 @@ void loop() {
     uint32_t t;
     while (((t = micros()) - prevTime) < (1000000L / MAX_FPS)); // FPS Limit?
     prevTime = t;
+
+    showImage(twitter, 1000);
+/*
+ * showImage, displays an image to the display with no animation
+ * args:
+ * - img[256][3] - Standard Pixo-Style icon
+ * - dlytime - The amount of time (in ms) to keep the image on the display
+ */
+void showImage(int img[256][3], int dlytime) {
+    matrix.fillScreen(0);
+
+    for (int i=0; i<256; i++){
+        matrix.setPixelColor(i, img[i][0], img[i][1], img[i][2]);
+    }
+
+    matrix.show();
+    delay(dlytime);
+  
+    matrix.fillScreen(0);
+    matrix.show();
+}
 }
