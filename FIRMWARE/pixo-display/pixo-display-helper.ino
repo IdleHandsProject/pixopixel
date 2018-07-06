@@ -29,9 +29,12 @@ Adafruit_DotStarMatrix matrix = Adafruit_DotStarMatrix(
     DOTSTAR_BGR);
 
 
+
 void setup(void) {
     matrix.begin();
     matrix.setBrightness(BRIGHTNESS);
+
+    scanChangeImage(darkness, sh, 1000, 10);
 }
 
 void loop() {
@@ -41,6 +44,10 @@ void loop() {
 
     showImage(twitter, 1000);
     notifyPopupImg(glogo, 500);
+
+
+}
+
 /*
  * showImage, displays an image to the display with no animation
  * args:
@@ -96,4 +103,29 @@ void notifyPopupImg(int img[256][3], int dlytime) {
     matrix.fillScreen(0);
     matrix.show();
 }
+// "Animation" or picture transition functions
+
+/*
+ * scanChangeImage, Change from one image to another with a scanline appearence
+ * args:
+ * - src[256][3] - Standard Pixo-Style icon that we Change from, displayed all at once
+ * - dst[256][3] - Standard Pixo-Style icon that we Change to, displayed one pixel at a time
+ * - dlytime - The amount of time (in ms) to keep the image on the display
+ * - anitime - The amount of time (in ms) between drawing each pixel during the Changeition; the lower this number, the faster the Changeition
+ */
+void scanChangeImage(int src[256][3], int dst[256][3], int dlytime, int anitime) {
+    for (int i=0; i<256; i++){
+        matrix.setPixelColor(i, src[i][0], src[i][1], src[i][2]);
+    }
+    matrix.show();
+
+    delay(dlytime);
+
+    for (int i=0; i<256; i++){
+        matrix.setPixelColor(i, dst[i][0], dst[i][1], dst[i][2]);
+        matrix.show();
+        delay(anitime);
+    }
+
+    delay(dlytime);
 }
