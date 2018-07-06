@@ -28,25 +28,11 @@ Adafruit_DotStarMatrix matrix = Adafruit_DotStarMatrix(
     DS_MATRIX_ROWS + DS_MATRIX_PROGRESSIVE,
     DOTSTAR_BGR);
 
-
-
 void setup(void) {
     matrix.begin();
     matrix.setBrightness(BRIGHTNESS);
 
     scanChangeImage(darkness, sh, 1000, 10);
-}
-
-void loop() {
-    uint32_t t;
-    while (((t = micros()) - prevTime) < (1000000L / MAX_FPS)); // FPS Limit?
-    prevTime = t;
-
-    showImage(twitter, 1000);
-    notifyPopupImg(glogo, 500);
-    notifyScrollImg(upvote, 1000, 4);
-
-
 }
 
 /*
@@ -110,7 +96,7 @@ void notifyPopupImg(int img[256][3], int dlytime) {
  * args:
  * - img[256][3] - Standard Pixo-Style icon
  * - dlytime - The amount of time (in ms) to keep the image on the display
- * - loops - The total amount of times this should loop through
+ * - loops (optional) - The total amount of times this should loop through
  */
 void notifyScrollImg(int img[256][3], int dlytime, int loops=0) {
     for (int x=0; x<=loops; x++) {
@@ -147,10 +133,10 @@ void notifyScrollImg(int img[256][3], int dlytime, int loops=0) {
 /*
  * scanChangeImage, Change from one image to another with a scanline appearence
  * args:
- * - src[256][3] - Standard Pixo-Style icon that we Change from, displayed all at once
- * - dst[256][3] - Standard Pixo-Style icon that we Change to, displayed one pixel at a time
+ * - src[256][3] - Standard Pixo-Style icon that we change from, displayed all at once
+ * - dst[256][3] - Standard Pixo-Style icon that we change to, displayed one pixel at a time
  * - dlytime - The amount of time (in ms) to keep the image on the display
- * - anitime - The amount of time (in ms) between drawing each pixel during the Changeition; the lower this number, the faster the Changeition
+ * - anitime - The amount of time (in ms) between drawing each pixel during the transition; the lower this number, the faster the transition
  */
 void scanChangeImage(int src[256][3], int dst[256][3], int dlytime, int anitime) {
     for (int i=0; i<256; i++){
@@ -167,4 +153,46 @@ void scanChangeImage(int src[256][3], int dst[256][3], int dlytime, int anitime)
     }
 
     delay(dlytime);
+}
+
+/*
+ * randChangeImage, Change from one image to another with a random pixel selection
+ * args:
+ * - src[256][3] - Standard Pixo-Style icon that we change from, displayed all at once
+ * - dst[256][3] - Standard Pixo-Style icon that we change to, displayed one pixel at a time
+ * - dlytime - The amount of time (in ms) to keep the image on the display
+ * - anitime - The amount of time (in ms) between drawing each pixel during the transition; the lower this number, the faster the transition
+ */
+void randChangeImage(int src[256][3], int dst[256][3], int dlytime, int anitime) {
+    int changed[256];
+    for (int i=0; i<256; i++){
+        matrix.setPixelColor(i, src[i][0], src[i][1], src[i][2]);
+    }
+    matrix.show();
+
+    delay(dlytime);
+
+    for (int i=0; i<256; i++){
+        int selected = random(0, 256);
+        // If the selected pixel was inside changed array, select a new one...
+        // Add selected to changed array
+        matrix.setPixelColor(selected, dst[selected][0], dst[selected][1], dst[selected][2]);
+        matrix.show();
+        delay(anitime);
+    }
+
+    delay(dlytime);
+}
+
+// Loop is at the bottom because Arduino started giving me undefined function errors...
+void loop() {
+    uint32_t t;
+    while (((t = micros()) - prevTime) < (1000000L / MAX_FPS)); // FPS Limit?
+    prevTime = t;
+
+    showImage(twitter, 1000);
+    notifyPopupImg(glogo, 500);
+    notifyScrollImg(upvote, 1000, 4);
+
+    randChangeImage(mario, pridec0de, 1000, 10);
 }
