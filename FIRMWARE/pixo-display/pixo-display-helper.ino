@@ -44,6 +44,7 @@ void loop() {
 
     showImage(twitter, 1000);
     notifyPopupImg(glogo, 500);
+    notifyScrollImg(upvote, 1000, 4);
 
 
 }
@@ -103,6 +104,44 @@ void notifyPopupImg(int img[256][3], int dlytime) {
     matrix.fillScreen(0);
     matrix.show();
 }
+
+/*
+ * notifyScrollImg, draws an image that scrolls upward into view, and upwards out; Loop this to scroll continuously
+ * args:
+ * - img[256][3] - Standard Pixo-Style icon
+ * - dlytime - The amount of time (in ms) to keep the image on the display
+ * - loops - The total amount of times this should loop through
+ */
+void notifyScrollImg(int img[256][3], int dlytime, int loops=0) {
+    for (int x=0; x<=loops; x++) {
+        for (int j = 15; j >= 0; j--) {
+            matrix.fillScreen(0);
+            for (int i = 0; i < 256; i++) {
+                matrix.setPixelColor(i + (j * 16), 
+                    img[i][0], img[i][1], img[i][2]);
+            }
+            matrix.show();
+            delay(15);
+        }
+
+        delay(dlytime);
+
+        for (int j = 0; j >= -16; j--) {
+            matrix.fillScreen(0);
+            for (int i = 0; i < 256; i++) {
+                matrix.setPixelColor(i + (j * 16),
+                    img[i][0], img[i][1], img[i][2]);
+            }
+            matrix.show();
+            delay(15);
+        }
+
+        delay(100);
+        matrix.fillScreen(0);
+        matrix.show();
+    }
+}
+
 // "Animation" or picture transition functions
 
 /*
