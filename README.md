@@ -5,11 +5,9 @@ This project is open source!
 
 If you want to build this yourself, you can find the Bill of Materials [here](https://www.findchips.com/org/10-open-hardware/list/85998-pixo-pixel-esp-board-and-led-board) on FindChips.
 
-I have submitted a pull request to the Arduino-ESP32 github: https://github.com/espressif/arduino-esp32 to have the PIXO Pixel have its own board file. This will ensure the pinout that was used will match the pin declartion on the board. In the meantime, please use the "Adafruit Feather ESP32" in the board manager, as the pinout is the same.
-
 ## Flashing Firmware Instructions
 1. You need to have the current version of the [Arduino IDE](https://arduino.cc) installed
-2. Ensure that you have the [Arduino ESP32 Boards](https://github.com/espressif/arduino-esp32) installed (This library is currently broken, a workaround has been found [Here](https://github.com/espressif/arduino-esp32/issues/1559))
+2. Ensure that you have the [Arduino ESP32 Boards](https://github.com/espressif/arduino-esp32) installed
 3. Various other libraries are required for the example firmware; they are listed below under "Libraries used in Example Firmware"
 4. Connect your pixo pixel to your computer and start Arduino
 5. Under the "Tools" menu, select "Board->Adafruit ESP32 Feather"; Leave Flash frequency and Upload speed the default
