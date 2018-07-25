@@ -246,18 +246,24 @@ void randChangePxl(int src[TOTALPXLS][3], int dst[TOTALPXLS][3], int dlytime, in
     delay(dlytime);
 }
 
-// Loop is at the bottom because Arduino started giving me undefined function errors...
+void setup(void) {
+    matrix.begin();
+    matrix.setBrightness(BRIGHTNESS);
+
+    // Initialize our pixel structure
+    for (int cnt = 0; cnt < TOTALPXLS; cnt++) {
+        pixols[cnt].active = false;
+        pixols[cnt].id = cnt;
+    }
+
+    // Bootup SH logo
+    showPxl(sh, 1000);
+}
+
 void loop() {
-    uint32_t t;
-    while (((t = micros()) - prevTime) < (1000000L / MAX_FPS)); // FPS Limit?
-    prevTime = t;
-
     showPxl(twitter, 1000);
-    notifyPopupPxl(glogo, 500);
-    notifyScrollPxl(upvote, 1000, 4);
-    notifyScrollPxl(mario, 1000); // Not specifying the loop will make it only show once
-
-    // This is supposed to be a random pixel fill transition, but 
-    // the rng does not guarentee unique numbers in the range automatically
-    randChangePxl(mario, pridec0de, 1000, 10);
+    randChangePxl(twitter, ig, 1000, 20);
+    notifyScrollPxl(upvote, 1000, 2);
+    notifyPopupPxl(glogo, 1000);
+    notify
 }
