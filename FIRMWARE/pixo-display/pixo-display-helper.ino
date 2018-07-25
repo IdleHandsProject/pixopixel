@@ -156,6 +156,21 @@ void notifyScrollPxl(int pxl[TOTALPXLS][3], int dlytime, int loops=0) {
     }
 }
 
+/*
+ * notifyBlinkPxl, flash a Pixol on screen repeatedly
+ * args:
+ * - pxl[256][3] - Standard Pixol image, displayed all at once
+ * - dlytime - The amount of time (in ms) to keep the image on the display
+ * - loops (optional) - The total amount of times this should blink
+ * - color (optional) - Whether or not to set the active pixel's color to its stored value
+ */
+void notifyBlinkPxl(int pxl[256][3], int dlytime, int loops=0, bool color=false) {
+    for (int i = 0; i <= loops; i++) {
+        showPxl(pxl, dlytime, color);
+        showPxl(darkness, dlytime, color);
+    }
+}
+
 // "Animation" or picture transition functions
 
 /*
