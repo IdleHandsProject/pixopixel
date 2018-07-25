@@ -206,22 +206,41 @@ void scanChangePxl(int src[TOTALPXLS][3], int dst[TOTALPXLS][3], int dlytime, in
  * - dlytime - The amount of time (in ms) to keep the image on the display
  * - anitime - The amount of time (in ms) between drawing each pixel during the transition; the lower this number, the faster the transition
  */
-void randChangePxl(int src[256][3], int dst[256][3], int dlytime, int anitime) {
-    int changed[256];
-    for (int i=0; i<256; i++){
+void randChangePxl(int src[TOTALPXLS][3], int dst[TOTALPXLS][3], int dlytime, int anitime) {
+    resetActiveState();
+
+    // Image that we are animating from
+    for (int i = 0; i < TOTALPXLS; i++){
+        pixols[i].active = false;
         matrix.setPixelColor(i, src[i][0], src[i][1], src[i][2]);
     }
     matrix.show();
 
     delay(dlytime);
+    
+    // Image that we are animating to
+    while (activePixelCount() < TOTALPXLS) {
+        randomSeed(A1);
+        int selected = random(0, TOTALPXLS);
 
-    for (int i=0; i<256; i++){
-        int selected = random(0, 256);
-        // If the selected pixel was inside changed array, select a new one...
-        // Add selected to changed array
-        matrix.setPixelColor(selected, dst[selected][0], dst[selected][1], dst[selected][2]);
+        // Select only pixels that have not already been set
+        if (pixols[selected].active) {
+            while (true) {
+                selected = random(0, TOTALPXLS);
+                if (!pixols[selected].active) {
+                    break;
+                }
+            }
+        }
+
+        pixols[selected].active = true;
+        matrix.setPixelColor(selected, dst[selected][0],
+                                       dst[selected][1],
+                                       dst[selected][2]);
         matrix.show();
         delay(anitime);
+
+        if (activePixelCount() >= TOTALPXLS) break;
     }
 
     delay(dlytime);
