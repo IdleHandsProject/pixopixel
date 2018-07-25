@@ -62,12 +62,26 @@ void resetActiveState() {
  * args:
  * - pxl[TOTALPXLS][3] - Standard Pixol image
  * - dlytime - The amount of time (in ms) to keep the image on the display
+ * - color (optional) - Whether or not to set the active pixel's color to its stored value
  */
-void showPxl(int pxl[256][3], int dlytime) {
-    matrix.fillScreen(0);
+void showPxl(int pxl[TOTALPXLS][3], int dlytime, bool color=false) {
+    resetActiveState();
 
-    for (int i=0; i<256; i++){
-        matrix.setPixelColor(i, pxl[i][0], pxl[i][1], pxl[i][2]);
+    for (int i=0; i < TOTALPXLS; i++){
+        if (pxl[i][0] != 0 && pxl[i][1] != 0 && pxl[i][2] != 0) {
+            pixols[i].active = true;
+        }
+
+        if (!color) {
+            matrix.setPixelColor(i, pxl[i][0], pxl[i][1], pxl[i][2]);
+        }else {
+            if (pixols[i].active) {
+                matrix.setPixelColor(i, pxl[i][pixols[i].r], 
+                                        pxl[i][pixols[i].g],
+                                        pxl[i][pixols[i].b]);
+            }
+            
+        }
     }
 
     matrix.show();
