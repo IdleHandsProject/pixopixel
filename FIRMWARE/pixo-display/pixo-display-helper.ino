@@ -21,9 +21,21 @@ uint32_t        prevTime = 0;
 
 #define DATAPIN    19
 #define CLOCKPIN   18
-#define SHIFTDELAY 30
-#define BRIGHTNESS 15
-#define MAX_FPS    45 
+define MAX_FPS    45 
+#define TOTALPXLS  256 // The total number of LEDs
+
+// This structure stores the state of all of the LEDS
+// The loop will reset various parts of this, such as the active state
+// to allow multiple animations to occurr in a row
+struct PXL {
+    byte id: 1;
+    byte r: 1;
+    byte g: 1;
+    byte b: 1;
+    byte active: 1;
+};
+
+struct PXL pixols[TOTALPXLS];
 
 Adafruit_DotStarMatrix matrix = Adafruit_DotStarMatrix(
     16, 16, DATAPIN, CLOCKPIN,
