@@ -21,7 +21,7 @@ uint32_t        prevTime = 0;
 
 #define DATAPIN    19
 #define CLOCKPIN   18
-define MAX_FPS    45 
+#define BRIGHTNESS 15
 #define TOTALPXLS  256 // The total number of LEDs
 
 // This structure stores the state of all of the LEDS
@@ -43,17 +43,24 @@ Adafruit_DotStarMatrix matrix = Adafruit_DotStarMatrix(
     DS_MATRIX_ROWS + DS_MATRIX_PROGRESSIVE,
     DOTSTAR_BGR);
 
-void setup(void) {
-    matrix.begin();
-    matrix.setBrightness(BRIGHTNESS);
+int activePixelCount() {
+    int totalActive = 0;
+    for (int cnt = 0; cnt < TOTALPXLS; cnt++) {
+        if (pixols[cnt].active == true) totalActive++;
+    }
+    return totalActive;
+}
 
-    scanChangePxl(darkness, sh, 1000, 10);
+// Use this at the beginning of functions that set the active state
+void resetActiveState() {
+    for (int i = 0; i < TOTALPXLS; i++) 
+        pixols[i].active = false;
 }
 
 /*
  * showPxl, displays a Pixol to the display with no animation
  * args:
- * - pxl[256][3] - Standard Pixol image
+ * - pxl[TOTALPXLS][3] - Standard Pixol image
  * - dlytime - The amount of time (in ms) to keep the image on the display
  */
 void showPxl(int pxl[256][3], int dlytime) {
@@ -75,13 +82,12 @@ void showPxl(int pxl[256][3], int dlytime) {
 /*
  * notifyPopupPxl, draws a Pixol that scrolls into view, and back down
  * args:
- * - pxl[256][3] - Standard Pixol image
+ * - pxl[TOTALPXLS][3] - Standard Pixol image
  * - dlytime - The amount of time (in ms) to keep the image on the display
  */
-void notifyPopupPxl(int pxl[256][3], int dlytime) {
+void notifyPopupPxl(int pxl[TOTALPXLS][3], int dlytime) {
     for (int j = 15; j >= 0; j--) {
-        matrix.fillScreen(0);
-        for (int i = 0; i < 256; i++) {
+        for (int i = 0; i < TOTALPXLS; i++) {
             matrix.setPixelColor(i + (j * 16),
                 pxl[i][0], pxl[i][1], pxl[i][2]);
         }
@@ -92,10 +98,9 @@ void notifyPopupPxl(int pxl[256][3], int dlytime) {
     delay(dlytime);
 
     for (int j = 0; j <= 16; j++) {
-        matrix.fillScreen(0);
-        for (int i = 0; i < 256; i++) {
-        matrix.setPixelColor(i + (j * 16),
-            pxl[i][0], pxl[i][1], pxl[i][2]);
+        for (int i = 0; i < TOTALPXLS; i++) {
+            matrix.setPixelColor(i + (j * 16),
+                pxl[i][0], pxl[i][1], pxl[i][2]);
         }
         matrix.show();
         delay(50);
@@ -107,15 +112,14 @@ void notifyPopupPxl(int pxl[256][3], int dlytime) {
 /*
  * notifyScrollPxl, draws a Pixol that scrolls upward into view, and upwards out; Loop this to scroll X times
  * args:
- * - pxl[256][3] - Standard Pixol image
+ * - pxl[TOTALPXLS][3] - Standard Pixol image
  * - dlytime - The amount of time (in ms) to keep the image on the display
  * - loops (optional) - The total amount of times this should loop through
  */
-void notifyScrollPxl(int pxl[256][3], int dlytime, int loops=0) {
+void notifyScrollPxl(int pxl[TOTALPXLS][3], int dlytime, int loops=0) {
     for (int x=0; x<=loops; x++) {
         for (int j = 15; j >= 0; j--) {
-            matrix.fillScreen(0);
-            for (int i = 0; i < 256; i++) {
+            for (int i = 0; i < TOTALPXLS; i++) {
                 matrix.setPixelColor(i + (j * 16), 
                     pxl[i][0], pxl[i][1], pxl[i][2]);
             }
@@ -126,8 +130,7 @@ void notifyScrollPxl(int pxl[256][3], int dlytime, int loops=0) {
         delay(dlytime);
 
         for (int j = 0; j >= -16; j--) {
-            matrix.fillScreen(0);
-            for (int i = 0; i < 256; i++) {
+            for (int i = 0; i < TOTALPXLS; i++) {
                 matrix.setPixelColor(i + (j * 16),
                     pxl[i][0], pxl[i][1], pxl[i][2]);
             }
@@ -144,20 +147,20 @@ void notifyScrollPxl(int pxl[256][3], int dlytime, int loops=0) {
 /*
  * scanChangePxl, Change from one Pixol to another with a scanline appearence
  * args:
- * - src[256][3] - Standard Pixo-Style icon that we change from, displayed all at once
- * - dst[256][3] - Standard Pixo-Style icon that we change to, displayed one pixel at a time
+ * - src[TOTALPXLS][3] - Standard Pixo-Style icon that we change from, displayed all at once
+ * - dst[TOTALPXLS][3] - Standard Pixo-Style icon that we change to, displayed one pixel at a time
  * - dlytime - The amount of time (in ms) to keep the image on the display
  * - anitime - The amount of time (in ms) between drawing each pixel during the transition; the lower this number, the faster the transition
  */
-void scanChangePxl(int src[256][3], int dst[256][3], int dlytime, int anitime) {
-    for (int i=0; i<256; i++){
+void scanChangePxl(int src[TOTALPXLS][3], int dst[TOTALPXLS][3], int dlytime, int anitime) {
+    for (int i=0; i<TOTALPXLS; i++){
         matrix.setPixelColor(i, src[i][0], src[i][1], src[i][2]);
     }
     matrix.show();
 
     delay(dlytime);
 
-    for (int i=0; i<256; i++){
+    for (int i=0; i<TOTALPXLS; i++){
         matrix.setPixelColor(i, dst[i][0], dst[i][1], dst[i][2]);
         matrix.show();
         delay(anitime);
@@ -169,8 +172,8 @@ void scanChangePxl(int src[256][3], int dst[256][3], int dlytime, int anitime) {
 /*
  * randChangePxl, Change from one Pixol to another with a random pixel selection
  * args:
- * - src[256][3] - Standard Pixo-Style icon that we change from, displayed all at once
- * - dst[256][3] - Standard Pixo-Style icon that we change to, displayed one pixel at a time
+ * - src[TOTALPXLS][3] - Standard Pixo-Style icon that we change from, displayed all at once
+ * - dst[TOTALPXLS][3] - Standard Pixo-Style icon that we change to, displayed one pixel at a time
  * - dlytime - The amount of time (in ms) to keep the image on the display
  * - anitime - The amount of time (in ms) between drawing each pixel during the transition; the lower this number, the faster the transition
  */
