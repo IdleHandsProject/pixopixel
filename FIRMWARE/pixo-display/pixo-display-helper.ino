@@ -9,15 +9,11 @@
  * Note that this does not interact with the MPU 
  */
 
-#include <Wire.h>            // For I2C communication
-#include <SPI.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_DotStarMatrix.h>
 #include <Adafruit_DotStar.h>
 #include <ArduinoJson.h>
 #include "pixols.h"
-
-uint32_t        prevTime = 0;
 
 #define DATAPIN    19
 #define CLOCKPIN   18
@@ -159,12 +155,12 @@ void notifyScrollPxl(int pxl[TOTALPXLS][3], int dlytime, int loops=0) {
 /*
  * notifyBlinkPxl, flash a Pixol on screen repeatedly
  * args:
- * - pxl[256][3] - Standard Pixol image, displayed all at once
+ * - pxl[TOTALPXLS][3] - Standard Pixol image, displayed all at once
  * - dlytime - The amount of time (in ms) to keep the image on the display
  * - loops (optional) - The total amount of times this should blink
  * - color (optional) - Whether or not to set the active pixel's color to its stored value
  */
-void notifyBlinkPxl(int pxl[256][3], int dlytime, int loops=0, bool color=false) {
+void notifyBlinkPxl(int pxl[TOTALPXLS][3], int dlytime, int loops=0, bool color=false) {
     for (int i = 0; i <= loops; i++) {
         showPxl(pxl, dlytime, color);
         showPxl(darkness, dlytime, color);
@@ -265,5 +261,6 @@ void loop() {
     randChangePxl(twitter, ig, 1000, 20);
     notifyScrollPxl(upvote, 1000, 2);
     notifyPopupPxl(glogo, 1000);
-    notify
+    notifyBlinkPxl(wifi, 1000, 3);
+
 }
